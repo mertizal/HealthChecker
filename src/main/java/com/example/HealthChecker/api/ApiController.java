@@ -1,7 +1,7 @@
 package com.example.HealthChecker.api;
 
 import com.example.HealthChecker.Models.Monitor;
-import com.example.HealthChecker.Request.TestRequest;
+import com.example.HealthChecker.Request.Request;
 import com.example.HealthChecker.servies.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -25,9 +25,9 @@ public class ApiController {
     }
 
     @PostMapping("/monitors")
-    public void saveMonitor(@RequestBody TestRequest testRequest) {
+    public void saveMonitor(@RequestBody Request request) {
 
-        apiService.saveMonitor(testRequest);
+        apiService.saveMonitor(request);
     }
 
 
