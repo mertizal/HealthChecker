@@ -1,41 +1,39 @@
 package com.example.HealthChecker.servies;
 
-import lombok.Getter;
-import lombok.Setter;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.events.session.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import javax.security.auth.login.LoginException;
-import java.util.Objects;
 
 @Component
-public class DiscordAlertBotService extends ListenerAdapter {
+public class DiscordAlertBotService {
 
+    private final String token = "MTEzOTk4MDQ5MTk1MzU1NzU2NQ.GNtZv8.rbbQulOhMpNc-1SRpxP3ayyd0nDskkFNJVUXVI";
 
-
-    public static void main(String[] args) throws LoginException {
-
-        String token = "MTEzOTk4MDQ5MTk1MzU1NzU2NQ.GNtZv8.rbbQulOhMpNc-1SRpxP3ayyd0nDskkFNJVUXVI";
+    public void sendMessageToChannel(String channelId, String message) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(token);
-        builder.addEventListeners(new DiscordAlertBotService());
+        builder.addEventListeners(new MessageSender(channelId, message));
         builder.build();
-
     }
 
-    @Override
-    public void onReady(ReadyEvent event) {
+    private static class MessageSender extends ListenerAdapter {
+        private String channelId;
+        private String message;
 
-        sendMessageToChannel(Objects.requireNonNull(event.getJDA().getTextChannelById("1139960037972901941")),"serhat");
+        public MessageSender(String channelId, String message) {
+            this.channelId = channelId;
+            this.message = message;
+        }
+
+        @Override
+        public void onReady(ReadyEvent event) {
+            TextChannel channel = event.getJDA().getTextChannelById(channelId);
+            if (channel != null) {
+                channel.sendMessage(message).queue();
+            }
+            event.getJDA().shutdown();
+        }
     }
-
-    public void sendMessageToChannel(TextChannel channel, String message) {
-
-        channel.sendMessage(message).queue();
-    }
-
-
-
 }

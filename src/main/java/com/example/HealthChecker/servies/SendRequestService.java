@@ -5,26 +5,12 @@ import com.example.HealthChecker.repository.MonitorRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.audit.AuditLogEntry;
-import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.Mentions;
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.events.session.ReadyEvent;
-import net.dv8tion.jda.api.hooks.IEventManager;
-import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.interceptor.CacheEvictOperation;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.*;
-
-import net.dv8tion.jda.api.events.session.ReadyEvent;
-
 import javax.security.auth.login.LoginException;
 
 @RequiredArgsConstructor
@@ -36,20 +22,15 @@ public class SendRequestService {
     public Timestamp endLifeCycleTime;
     public Timestamp currentTimestamp;
     private Map<String, Boolean> processedObjects = new HashMap<>();
-
     private final MonitorRepository monitorRepository;
-
     private final ConnectionUrlService connectionUrlService;
-
     @Autowired
     private final DiscordAlertBotService discordAlertBotService;
-
     @Autowired
     private EmailSenderService emailSenderService;
 
-
     @Scheduled(fixedDelay = 10000)
-    public void sendRequest() throws IOException {
+    public void sendRequest() {
 
         List<Monitor> allMonitoring = monitorRepository.findAll();
 
@@ -82,14 +63,17 @@ public class SendRequestService {
                                                     String.format("%s adresli siteniz %s saniye sonra tekrar ayağa" +
                                                                     " kalkmış durumda" +
                                                                     " Allah bir daha düşürmesin"
-                                                            , monitor.getUrl(), monitor.getFailTime(),
-                                                            monitor.getLastStatusCode()));
-                                            monitor.setFailTime(0);
+                                                            ,monitor.getUrl(),monitor.getFailTime()));
 
+                                            discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
+                                                    "%s adresli siteniz %s saniye sonra tekrar ayağa kalktı"
+                                                            .formatted(monitor.getUrl(), monitor.getFailTime()));
+
+                                            monitor.setFailTime(0);
                                             log.info("A mail sending..");
                                             log.info(String.valueOf(monitor));
-                                        } else {
 
+                                        } else {
 
                                             monitor.setLastRunTime(currentTimestamp);
                                             monitor.setLastStatusCode(responseStatus);
@@ -99,8 +83,11 @@ public class SendRequestService {
                                                                     " siteniz an itibariyle %s hata kodu vermektedir "
                                                             , monitor.getUrl(), monitor.getLastStatusCode()));
 
-                                            log.info("A mail sending for " + monitor.getUrl());
+                                            discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
+                                                    "%s adresli siteniz göçmüş olabilir.. %s durum kodu"
+                                                            .formatted(monitor.getUrl(), monitor.getLastStatusCode()));
 
+                                            log.info("A mail sending for " + monitor.getUrl());
 
                                         }
 
@@ -123,10 +110,11 @@ public class SendRequestService {
 
                                     monitor.setTotalUpTimeRecent((int) calculateTotalUpTimeAsPercent(
                                             monitor.getTotalStayUpTime(), monitor.getTotalFailTime()));
+
                                     monitorRepository.save(monitor);
                                     log.info(monitor.getUrl() + " done.");
 
-                                } catch (IOException | InterruptedException e) {
+                                } catch (IOException | InterruptedException | LoginException e) {
                                     log.error("An error occured while sending http request: " + e.getMessage());
                                 }
 
@@ -137,8 +125,6 @@ public class SendRequestService {
                 );
 
     }
-
-
 
     public Boolean checkMonitorHealthIsDifferent(Monitor theMonitor, int responseStatus) {
 
