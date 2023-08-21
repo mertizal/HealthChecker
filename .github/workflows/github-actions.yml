@@ -1,13 +1,28 @@
 name: github-actions
 run-name: ${{ github.actor }} is learning GitHub Actions
-on: [push]
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+  workflow_dispatch:
+
 jobs:
-  check-bats-version:
-    runs-on: ubuntu-latest
+  hello:
+    runs_on: ubuntu-lastest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-      - run: npm install -g bats
-      - run: bats -v
+      - uses: actions/checkout@v2
+      - name: hello world
+        run: echo "selam dünya ben masaka"
+        shell: bash
+  goodbye:
+    runs_on: ubuntu-lastest
+    steps:
+      - name: goodbye world
+        run: echo "Goodbye world"
+        shell : bash
+
