@@ -50,7 +50,10 @@ public class SendRequestService {
                                         processedObjects.put(monitor.getUrl(), true);
                                     }
 
-                                    int responseStatus = connectionUrlService.httpUrlConnection(monitor.getUrl()).getStatusCode();
+                                    ConnectionUrlService.Result result = connectionUrlService.httpUrlConnection(monitor.getUrl());
+                                    int responseStatus = result.getStatusCode();
+                                    Object response = result.getResponse();
+
                                     if (checkMonitorHealthIsDifferent(monitor, responseStatus)) {
 
                                         if (responseStatus / 100 <= 2) {
@@ -58,16 +61,16 @@ public class SendRequestService {
                                             monitor.setLastRunTime(currentTimestamp);
                                             monitor.setLastStatusCode(responseStatus);
 
-                                            emailSenderService.sendEmail(monitor.getMail(), "Düşmez kalkmaz bir Allahtır..",
+                                            /*emailSenderService.sendEmail(monitor.getMail(), "Düşmez kalkmaz bir Allahtır..",
 
                                                     String.format("%s adresli siteniz %s saniye sonra tekrar ayağa" +
                                                                     " kalkmış durumda" +
                                                                     " Allah bir daha düşürmesin"
-                                                            ,monitor.getUrl(),monitor.getFailTime()));
+                                                            ,monitor.getUrl(),monitor.getFailTime()));*/
 
-                                            discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
+                                           /* discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
                                                     "%s adresli siteniz %s saniye sonra tekrar ayağa kalktı"
-                                                            .formatted(monitor.getUrl(), monitor.getFailTime()));
+                                                            .formatted(monitor.getUrl(), monitor.getFailTime()));*/
 
                                             monitor.setFailTime(0);
                                             log.info("A mail sending..");
@@ -77,11 +80,11 @@ public class SendRequestService {
 
                                             monitor.setLastRunTime(currentTimestamp);
                                             monitor.setLastStatusCode(responseStatus);
-                                            emailSenderService.sendEmail(monitor.getMail(), "başaramadık abi..",
+                                            /*emailSenderService.sendEmail(monitor.getMail(), "başaramadık abi..",
 
                                                     String.format("%s adresli siteniz göçmüş olabilir.." +
                                                                     " siteniz an itibariyle %s hata kodu vermektedir "
-                                                            , monitor.getUrl(), monitor.getLastStatusCode()));
+                                                            , monitor.getUrl(), monitor.getLastStatusCode()));*/
 
                                             discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
                                                     "%s adresli siteniz göçmüş olabilir.. %s durum kodu"
@@ -97,7 +100,6 @@ public class SendRequestService {
 
                                             monitor.setLastRunTime(currentTimestamp);
                                             monitor.setTotalStayUpTime(monitor.getInterval() + monitor.getTotalStayUpTime());
-
 
                                         } else {
 

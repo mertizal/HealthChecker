@@ -1,9 +1,10 @@
 package com.example.HealthChecker.api;
 
 import com.example.HealthChecker.Models.Monitor;
-import com.example.HealthChecker.Request.Request;
+import com.example.HealthChecker.Dto.MonitorDto;
 import com.example.HealthChecker.servies.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -25,10 +26,23 @@ public class ApiController {
     }
 
     @PostMapping("/monitors")
-    public void saveMonitor(@RequestBody Request request) {
+    public void saveMonitor(@RequestBody MonitorDto request) {
 
         apiService.saveMonitor(request);
     }
 
+    @PatchMapping("/{id}")
+    public void updateMonitor(@PathVariable Long id, @RequestBody MonitorDto monitorDto) {
+
+        apiService.partialUpdateMonitor(id, monitorDto);
+
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMonitor(@PathVariable Long id) {
+
+        apiService.deleteMonitor(id);
+
+    }
 
 }

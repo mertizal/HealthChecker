@@ -1,7 +1,7 @@
 package com.example.HealthChecker.servies;
 
 import com.example.HealthChecker.Models.Monitor;
-import com.example.HealthChecker.Request.Request;
+import com.example.HealthChecker.Dto.MonitorDto;
 import com.example.HealthChecker.repository.MonitorRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +22,7 @@ class ApiServiceTest {
     @Test
     void saveMonitor() {
         // given
-        Request request = new Request();
+        MonitorDto request = new MonitorDto();
         request.setInterval(1000);
         request.setMail("mert@hotmail.com");
         request.setUrl("https://google.com");
@@ -33,11 +33,10 @@ class ApiServiceTest {
         // then
         Mockito.verify(monitorRepository, Mockito.times(1)).save(Mockito.any(Monitor.class));
     }
-
     @Test
     void saveMonitor_when_TestRequest_is_null() {
         // given
-        Request request = null;
+        MonitorDto request = null;
 
         // when
         apiService.saveMonitor(request);
@@ -45,5 +44,4 @@ class ApiServiceTest {
         // then
         Mockito.verify(monitorRepository, Mockito.times(0)).save(Mockito.any(Monitor.class));
     }
-
 }

@@ -8,6 +8,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+
+import java.util.Objects;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
@@ -39,7 +42,7 @@ class EmailSenderServiceTest {
         SimpleMailMessage sentMessage = messageCaptor.getValue();
 
         assertEquals("izal.mert@gmail.com", sentMessage.getFrom());
-        assertEquals(toEmail, sentMessage.getTo()[0]);
+        assertEquals(toEmail, Objects.requireNonNull(sentMessage.getTo())[0]);
         assertEquals(subject, sentMessage.getSubject());
         assertEquals(body, sentMessage.getText());
     }
