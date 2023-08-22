@@ -13,7 +13,7 @@ jobs:
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v3
         with:
-          issue-number: 1
+          issue-number: ${{ toJSON(github.event) }}
           body: |
             This is a multi-line test comment
             - With GitHub **Markdown** :sparkles:
