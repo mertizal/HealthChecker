@@ -6,7 +6,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.ContextHierarchy;
 
 @SpringBootTest
-@ContextConfiguration
 class HealthCheckerApplicationTests {
 
 	@Test
