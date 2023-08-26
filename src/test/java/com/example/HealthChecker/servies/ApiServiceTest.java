@@ -15,7 +15,6 @@ import org.springframework.test.context.web.WebAppConfiguration;
 
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class ApiServiceTest {
 
     @InjectMocks

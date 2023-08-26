@@ -19,7 +19,6 @@ import static org.mockito.Mockito.verify;
 
 
 @ExtendWith(MockitoExtension.class)
-@SpringBootTest
 class EmailSenderServiceTest {
 
     @Mock
