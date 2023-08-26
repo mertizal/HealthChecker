@@ -18,8 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(Parameterized.class)
-@WebAppConfiguration
-@ContextConfiguration
 class SendRequestServiceTest {
 
     @InjectMocks
