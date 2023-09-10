@@ -1,0 +1,47 @@
+spring:
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: izal.mert@gmail.com
+    password: etxdwjmnqttgdcfy
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+            auth: true
+
+  devtools:
+    livereload:
+      enabled: true
+      port: 35729
+
+  jpa:
+
+    hibernate:
+      ddl-auto: update
+
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#    url: jdbc:postgresql://localhost:5432/postgres
+#    username: root
+#    password: root
+
+  main:
+    banner-mode: off
+
+  server:
+    error:
+      include-message: always
+
+  logging:
+    level:
+      root: warn
+
+
+
