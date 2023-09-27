@@ -5,7 +5,7 @@ on:
     branches: [ "main", "feat/cd" ]
 
 jobs:
-    build and deploy:
+    build-and-deploy:
       runs-on: ubuntu-latest
 
       steps:
