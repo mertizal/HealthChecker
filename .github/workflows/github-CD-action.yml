@@ -10,12 +10,6 @@ jobs:
 
       steps:
 
-        - uses: actions/checkout@v2
-        - name: Build application
-          run: | 
-            ./mvnw clean
-            ./mvnw -B package --file pom.xml
-
         - name: Build Docker Image
           uses: docker/build-push-action@v2
           with:
