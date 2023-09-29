@@ -19,5 +19,6 @@ jobs:
 
       - name: Build with Maven
         run: |
-          ./mvnw clean
-          ./mvnw -B package --file pom.xml
+          mvn clean
+          mvn test
+          mvn -B package --file pom.xml
