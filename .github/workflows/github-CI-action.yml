@@ -2,7 +2,7 @@ name: Java CI
 on:
 
   push:
-    branches: ["main", "feat/cd" ]
+    branches: ["main"]
   pull_request:
       branches: ["main"]
 
@@ -17,8 +17,5 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      - name: Build application
-        run: |
-          ./mvnw clean
-          ./mvnw test
-          ./mvnw -B package --file pom.xml
+      - name: Build with Maven
+        run: mvn test #mvn --batch-mode --update-snapshots package
