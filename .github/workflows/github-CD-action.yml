@@ -12,12 +12,8 @@ jobs:
 
         - name: Build application
           run: |
-            chmod +x mvnw
-            mv ./mvnw mvn
-            export PATH=$PATH:$(pwd)
-            mvn -v
-            ./mvnw clean 
-            ./mvnw -B package --file pom.xml
+            mvn clean
+            mvn -B package --file pom.xml 
 
         - name: Build Docker Image
           uses: docker/build-push-action@v2
