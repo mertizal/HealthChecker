@@ -11,9 +11,7 @@ jobs:
       steps:
 
         - name: Build application
-          run: |
-            cd /Users/mertizal/IdeaProjects/HealthChecker
-            mvn -B package --file pom.xml 
+          run: mvn -B package --file pom.xml
 
         - name: Build Docker Image
           uses: docker/build-push-action@v2
