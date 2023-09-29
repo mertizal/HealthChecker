@@ -2,7 +2,7 @@ name: Java CD
 
 on:
   push:
-    branches: [ "main", "feat/cd" ]
+    branches: [ "feat/cd" ]
 
 jobs:
     build-and-deploy:
