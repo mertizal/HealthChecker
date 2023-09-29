@@ -16,5 +16,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+
       - name: Build with Maven
-        run: mvn test #mvn --batch-mode --update-snapshots package
+        run: |
+          ./mvnw clean
+          ./mvnw -B package --file pom.xml
