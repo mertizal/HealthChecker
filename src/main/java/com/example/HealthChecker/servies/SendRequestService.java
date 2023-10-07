@@ -8,11 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 import javax.security.auth.login.LoginException;
@@ -59,16 +56,16 @@ public class SendRequestService {
                                         monitor.setLastRunTime(now);
                                         monitor.setLastStatusCode(responseStatus);
 
-                                            /*emailSenderService.sendEmail(monitor.getMail(), "Düşmez kalkmaz bir Allahtır..",
+                                            emailSenderService.sendEmail(monitor.getMail(), "Düşmez kalkmaz bir Allahtır..",
 
                                                     String.format("%s adresli siteniz %s saniye sonra tekrar ayağa" +
                                                                     " kalkmış durumda" +
                                                                     " Allah bir daha düşürmesin"
-                                                            ,monitor.getUrl(),monitor.getFailTime()));*/
+                                                            ,monitor.getUrl(),monitor.getFailTime()));
 
-                                           /* discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
+                                            discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
                                                     "%s adresli siteniz %s saniye sonra tekrar ayağa kalktı"
-                                                            .formatted(monitor.getUrl(), monitor.getFailTime()));*/
+                                                            .formatted(monitor.getUrl(), monitor.getFailTime()));
 
                                         monitor.setFailTime(0);
                                         log.info("A mail sending..");
@@ -78,11 +75,12 @@ public class SendRequestService {
 
                                         monitor.setLastRunTime(now);
                                         monitor.setLastStatusCode(responseStatus);
-                                            /*emailSenderService.sendEmail(monitor.getMail(), "başaramadık abi..",
+
+                                            emailSenderService.sendEmail(monitor.getMail(), "başaramadık abi..",
 
                                                     String.format("%s adresli siteniz göçmüş olabilir.." +
                                                                     " siteniz an itibariyle %s hata kodu vermektedir "
-                                                            , monitor.getUrl(), monitor.getLastStatusCode()));*/
+                                                            , monitor.getUrl(), monitor.getLastStatusCode()));
 
                                         discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
                                                 "%s adresli siteniz göçmüş olabilir.. %s durum kodu"

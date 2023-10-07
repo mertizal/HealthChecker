@@ -10,7 +10,10 @@ import javax.security.auth.login.LoginException;
 @Component
 public class DiscordAlertBotService {
 
-    private final String token = "MTEzOTk4MDQ5MTk1MzU1NzU2NQ.GH1Yht.SJjaquB77R5PSf5rdTbwtnMB3SMkcvIVgij9bs";
+    private final String token = System.getenv("DISCORD_ALERT_TOKEN");
+
+
+    //MTEzOTk4MDQ5MTk1MzU1NzU2NQ.GuAmoE.dpdD3ILfzMjJeXrMLmYj_6ZIia2filVvIzWdYc
 
     public void sendMessageToChannel(String channelId, String message) throws LoginException {
         JDABuilder builder = JDABuilder.createDefault(token);
