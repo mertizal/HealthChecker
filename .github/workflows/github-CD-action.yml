@@ -2,7 +2,7 @@ name: Java CD
 
 on:
   workflow_run:
-    workflows: ["Java CI"]
+    workflows: [" Java CI"]
     types:
       - completed
 
