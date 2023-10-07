@@ -1,8 +1,10 @@
 name: Java CD
 
 on:
-  push:
-    branches: ["feat/cd" ]
+  workflow_run:
+    workflows: [ "github-CI-action.yml" ]
+    types:
+      - completed
 
 jobs:
     build-and-deploy:
