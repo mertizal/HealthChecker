@@ -4,7 +4,6 @@ import com.example.HealthChecker.Models.Monitor;
 import com.example.HealthChecker.Dto.MonitorDto;
 import com.example.HealthChecker.servies.ApiService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
