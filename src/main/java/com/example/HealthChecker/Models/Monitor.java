@@ -27,6 +27,10 @@ public class Monitor {
 
     @JsonIgnore
     @Nullable
+    private String discordToken;
+
+    @JsonIgnore
+    @Nullable
     private int lastStatusCode;
 
     @JsonIgnore

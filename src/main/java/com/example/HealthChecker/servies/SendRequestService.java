@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -56,16 +57,21 @@ public class SendRequestService {
                                         monitor.setLastRunTime(now);
                                         monitor.setLastStatusCode(responseStatus);
 
-                                            emailSenderService.sendEmail(monitor.getMail(), "Düşmez kalkmaz bir Allahtır..",
+                                        emailSenderService.sendEmail(monitor.getMail(), "Düşmez kalkmaz bir Allahtır..",
 
-                                                    String.format("%s adresli siteniz %s saniye sonra tekrar ayağa" +
-                                                                    " kalkmış durumda" +
-                                                                    " Allah bir daha düşürmesin"
-                                                            ,monitor.getUrl(),monitor.getFailTime()));
+                                                String.format("%s adresli siteniz %s saniye sonra tekrar ayağa" +
+                                                                " kalkmış durumda" +
+                                                                " Allah bir daha düşürmesin"
+                                                        , monitor.getUrl(), monitor.getFailTime()));
 
-                                            discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
+                                        if (Objects.nonNull(monitor.getChannelId()) && Objects.nonNull(monitor.
+                                                getDiscordToken())) {
+
+                                            discordAlertBotService.sendMessageToChannel(monitor.getDiscordToken(),
+                                                    monitor.getChannelId(),
                                                     "%s adresli siteniz %s saniye sonra tekrar ayağa kalktı"
                                                             .formatted(monitor.getUrl(), monitor.getFailTime()));
+                                        }
 
                                         monitor.setFailTime(0);
                                         log.info("A mail sending..");
@@ -76,15 +82,20 @@ public class SendRequestService {
                                         monitor.setLastRunTime(now);
                                         monitor.setLastStatusCode(responseStatus);
 
-                                            emailSenderService.sendEmail(monitor.getMail(), "başaramadık abi..",
+                                        emailSenderService.sendEmail(monitor.getMail(), "başaramadık abi..",
 
-                                                    String.format("%s adresli siteniz göçmüş olabilir.." +
-                                                                    " siteniz an itibariyle %s hata kodu vermektedir "
-                                                            , monitor.getUrl(), monitor.getLastStatusCode()));
+                                                String.format("%s adresli siteniz göçmüş olabilir.." +
+                                                                " siteniz an itibariyle %s hata kodu vermektedir "
+                                                        , monitor.getUrl(), monitor.getLastStatusCode()));
 
-                                        discordAlertBotService.sendMessageToChannel(monitor.getChannelId(),
-                                                "%s adresli siteniz göçmüş olabilir.. %s durum kodu"
-                                                        .formatted(monitor.getUrl(), monitor.getLastStatusCode()));
+                                        if (Objects.nonNull(monitor.getChannelId()) && Objects.nonNull(monitor.
+                                                getDiscordToken())) {
+
+                                            discordAlertBotService.sendMessageToChannel(monitor.getDiscordToken(),
+                                                    monitor.getChannelId(),
+                                                    "%s adresli siteniz göçmüş olabilir.. %s durum kodu."
+                                                            .formatted(monitor.getUrl(), monitor.getLastStatusCode()));
+                                        }
 
                                         log.info("A mail sending for " + monitor.getUrl());
 
