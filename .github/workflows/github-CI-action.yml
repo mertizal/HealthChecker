@@ -21,5 +21,4 @@ jobs:
         run: |
           mvn clean
           mvn test
-          mvn compile
-          mvn package
+          mvn -B package --file pom.xml
