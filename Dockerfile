@@ -2,7 +2,7 @@
 FROM openjdk:17-jdk
 
 # Uygulama dosyalarını imaja kopyala
-COPY target/HealthCheckher-1.0.0.jar /app/HealthChecker.jar
+COPY target/HealthChecker-1.0.0.jar /app/HealthChecker.jar
 
 EXPOSE 8080
 
