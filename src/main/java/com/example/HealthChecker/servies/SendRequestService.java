@@ -36,8 +36,6 @@ public class SendRequestService {
 
         Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 
-        String dbPassword = System.getenv("MY_DB_PASSWORD");
-
         allMonitoring
                 .forEach(monitor -> {
                             try {
