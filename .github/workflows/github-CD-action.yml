@@ -1,8 +1,10 @@
 name: Java CD
 
 on:
-  push:
-    branches: ["main"]
+  workflow_run:
+    workflows: ["Java CI"]
+    types:
+      - completed
 
 jobs:
     build-and-deploy:
