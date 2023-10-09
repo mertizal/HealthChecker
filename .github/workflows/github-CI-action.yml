@@ -24,3 +24,10 @@ jobs:
           mvn test
           mvn -B package --file pom.xml
 
+      - name: Build Docker Image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          dockerfile: Dockerfile
+          push: false
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/health-checker-app:latest
