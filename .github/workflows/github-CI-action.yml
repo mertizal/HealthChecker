@@ -24,10 +24,8 @@ jobs:
           mvn test
           mvn -B package --file pom.xml
 
-      - name: Build Docker Image
-        uses: docker/build-push-action@v2
+      - name: Archive Artifact
+        uses: actions/upload-artifact@v2
         with:
-          context: .
-          dockerfile: Dockerfile
-          push: false
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/health-checker-app:latest
+          name: HealthChecker
+          path: target/HealthChecker-0.0.1-SNAPSHOT.jar
