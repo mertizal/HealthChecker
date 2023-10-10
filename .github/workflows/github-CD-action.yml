@@ -19,6 +19,7 @@ jobs:
           uses: actions/download-artifact@v3
           with:
               name: HealthChecker
+              path: path/to/artifact/
 
 
         - name: Build Docker Image
