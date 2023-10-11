@@ -24,8 +24,8 @@ jobs:
           mvn test
           mvn -B package --file pom.xml
 
-#      - name: Archive Artifact
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: HealthChecker
-#          path: path/to/artifact/
+      - name: Archive Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: HealthChecker-0.0.1-SNAPSHOT.jar
+          path: target/HealthChecker-0.0.1-SNAPSHOT.jar
