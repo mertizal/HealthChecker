@@ -23,7 +23,9 @@ jobs:
           mvn clean
           mvn test
           mvn -B package --file pom.xml
-
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
       - name: Build Docker Image
         uses: docker/build-push-action@v2
         with:
