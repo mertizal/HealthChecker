@@ -35,6 +35,9 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./HealthChecker
     steps:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
