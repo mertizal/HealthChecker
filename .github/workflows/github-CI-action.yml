@@ -25,9 +25,9 @@ jobs:
 
 #      - name: Save artifact
 #        uses: actions/upload-artifact@v2
-        with:
-          name: my-artifact
-          path: target
+#        with:
+#          name: my-artifact
+#          path: target
 
   deploy:
     needs: build
