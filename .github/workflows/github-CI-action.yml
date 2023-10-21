@@ -29,7 +29,7 @@ jobs:
         with:
           name: health-check-files
           path: |
-            - Dockerfile
+            - ./Dockerfile
             - target/HealthChecker-0.0.1-SNAPSHOT.jar
 
   deploy:
