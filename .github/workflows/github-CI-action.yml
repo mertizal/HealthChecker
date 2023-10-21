@@ -23,20 +23,10 @@ jobs:
           mvn test
           mvn -B package --file pom.xml
 
-#      - name: Save artifact
-#        uses: actions/upload-artifact@v2
-#        with:
-#          name: my-artifact
-#          path: target
-
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-
-      - name: Checkout Repo
-        uses: actions/checkout@v3
-
       - name: Build Docker Image
         uses: docker/build-push-action@v2
         with:
