@@ -36,6 +36,8 @@ jobs:
     steps:
       - name: Download all workflow run artifacts
         uses: actions/download-artifact@v3
+        with:
+          name: health-check-files
 
       - name: Build Docker Image
         uses: docker/build-push-action@v2
