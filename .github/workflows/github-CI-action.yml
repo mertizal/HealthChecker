@@ -29,8 +29,8 @@ jobs:
         with:
           name: health-check-files
           path: |
-            - ./Dockerfile
-            - target/HealthChecker-0.0.1-SNAPSHOT.jar
+            ./Dockerfile
+            ./target/HealthChecker-0.0.1-SNAPSHOT.jar
 
   deploy:
     needs: build
