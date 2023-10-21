@@ -22,12 +22,20 @@ jobs:
           mvn clean
           mvn test
           mvn -B package --file pom.xml
+      - name: Save artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: health-check-files
+          path: |
+            - Dockerfile
+            - target/HealthChecker-0.0.1-SNAPSHOT.jar
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Download all workflow run artifacts
+        uses: actions/download-artifact@v3
 
       - name: Build Docker Image
         uses: docker/build-push-action@v2
