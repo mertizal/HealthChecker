@@ -22,6 +22,8 @@ jobs:
           mvn clean
           mvn test
           mvn -B package --file pom.xml
+          pwd
+          ls
       - name: Save artifact
         uses: actions/upload-artifact@v3
         with:
