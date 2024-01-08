@@ -19,6 +19,12 @@ public class Monitor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String url;
+
+    @Nullable
+    private String targetPath;
+
+    @Nullable
+    private String expectedBodyValue;
     private String mail;
     private int interval;
 
@@ -28,6 +34,12 @@ public class Monitor {
     @JsonIgnore
     @Nullable
     private String discordToken;
+
+    // @Nullable
+    // private String actualBodyValue;
+
+    @Column(columnDefinition = "boolean default false")
+    private Boolean isNecessaryBodyControl;
 
     @JsonIgnore
     @Nullable

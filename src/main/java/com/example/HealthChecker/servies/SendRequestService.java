@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -28,11 +29,13 @@ public class SendRequestService {
     private final DiscordAlertBotService discordAlertBotService;
     @Autowired
     private EmailSenderService emailSenderService;
+    @Autowired
+    private BodyControlService bodyControlService;
 
     @Scheduled(fixedDelay = 10000)
     public void sendRequest() {
 
-        List<Monitor> allMonitoring = monitorRepository.FiterBlaBla();
+        List<Monitor> allMonitoring = monitorRepository.FilterMonitors();
 
         Timestamp now = Timestamp.valueOf(LocalDateTime.now());
 
@@ -48,6 +51,42 @@ public class SendRequestService {
                                 ConnectionUrlService.Result result = connectionUrlService.httpUrlConnection(monitor.getUrl());
                                 int responseStatus = result.getStatusCode();
                                 Object response = result.getResponse();
+
+                                if (monitor.getIsNecessaryBodyControl() && Objects.nonNull(response)) {
+
+                                    String outputValue = bodyControlService.checkBody(response, monitor.getTargetPath(),
+                                            monitor.getExpectedBodyValue());
+
+                                    if (Objects.nonNull(outputValue)) {
+
+                                        if (Objects.isNull(monitor.getDiscordToken())) {
+
+                                            emailSenderService.sendEmail(monitor.getMail(), "Body control..",
+
+                                                    String.format("%s adresli siteniziz body kısmında beklenen değer bu %s" +
+                                                                    " iken" +
+                                                                    " şu %s değer tespit edildi."
+                                                            , monitor.getUrl(), monitor.getExpectedBodyValue(), outputValue));
+
+                                        } else {
+
+                                            emailSenderService.sendEmail(monitor.getMail(), "Body control..",
+
+                                                    String.format("%s adresli siteniziz body kısmında beklenen değer bu %s" +
+                                                                    " iken" +
+                                                                    " şu %s değer tespit edildi."
+                                                            , monitor.getUrl(), monitor.getExpectedBodyValue(), outputValue));
+
+                                            discordAlertBotService.sendMessageToChannel(monitor.getDiscordToken(),
+                                                    monitor.getChannelId(),
+                                                    String.format("%s adresli siteniziz body kısmında beklenen değer bu %s" +
+                                                                    " iken" +
+                                                                    " şu %s değer tespit edildi."
+                                                            , monitor.getUrl(), monitor.getExpectedBodyValue(), outputValue));
+                                        }
+                                    }
+
+                                }
 
                                 if (checkMonitorHealthIsDifferent(monitor, responseStatus)) {
 
@@ -122,12 +161,14 @@ public class SendRequestService {
                                 monitorRepository.save(monitor);
                                 log.info(monitor.getUrl() + " done.");
 
-                            } catch (IOException | InterruptedException | LoginException e) {
+                            } catch (IOException | InterruptedException | LoginException | IllegalAccessException |
+                                     InvocationTargetException | NoSuchMethodException e) {
                                 log.error("An error occured while sending http request: " + e.getMessage());
                             }
 
 
                         }
+
 
                 );
 
@@ -135,12 +176,7 @@ public class SendRequestService {
 
     public Boolean checkMonitorHealthIsDifferent(Monitor theMonitor, int responseStatus) {
 
-        if ((theMonitor.getLastStatusCode() / 100) != (responseStatus / 100)) {
-
-            return true;
-        }
-
-        return false;
+        return (theMonitor.getLastStatusCode() / 100) != (responseStatus / 100);
 
     }
 
